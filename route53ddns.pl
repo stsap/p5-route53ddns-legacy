@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use FindBin;
-use lib $FindBin::RealBin."/";
+use lib $FindBin::RealBin."/lib";
 use AWS::Route53::Simple;
 use LWP::Simple qw(get);
 use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat);
