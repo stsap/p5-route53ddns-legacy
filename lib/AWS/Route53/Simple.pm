@@ -360,7 +360,7 @@ sub _timestamp {
             %ntp = get_ntp_response($server);
         };
         die($@) if ($@);
-        @times = localtime($ntp{"Transmit Timestamp"});
+        @times = gmtime($ntp{"Transmit Timestamp"});
     }
     my @weekdays = qw(Sun Mon Tue Wed Thu Fri Sat);
     my @months = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
