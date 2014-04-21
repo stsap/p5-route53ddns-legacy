@@ -361,7 +361,6 @@ sub _timestamp {
         die($@) if ($@);
         @times = gmtime($ntp{"Transmit Timestamp"});
     }
-        exit;
     my @weekdays = qw(Sun Mon Tue Wed Thu Fri Sat);
     my @months = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
     my ($s, $m, $h, $d, $M, $Y, $wd) = (@times)[0..6];
