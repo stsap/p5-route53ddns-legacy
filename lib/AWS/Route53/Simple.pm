@@ -126,6 +126,7 @@ sub new {
         "SignatureVersion" => "",
         "Version" => "",
         "Service" => "",
+        "use_ntp" => "",
         "debug" => 0,
         @_
     );
@@ -341,11 +342,29 @@ sub _createSignedParam {
 
 ## @method [private] [$] _timestamp(@params)
 # Generate time string that represents the current
+# @param opts [\%] options hashref
+# - use_ntp [$] 1=get times from NTP
+# - ntp_server [$] the case of use_ntp is true, specify an NTP server that you want to see.
 # @return [$] time string
 sub _timestamp {
+    my $self = shift;
+    my $opts = shift;
+    my $use_ntp = $self->{"use_ntp"} or $opts->{"use_ntp"};
+    my @times = gmtime();
+    if ($use_ntp) {
+        @times = undef;
+        my $server = $self->{"ntp_server"} or $opts->{"ntp_server"};
+        my %ntp;
+        eval {
+            use Net::NTP;
+            %ntp = get_ntp_responce($server);
+        };
+        die($@) if ($@);
+        @times = localtime($ntp{"Transmit Timestamp"});
+    }
     my @weekdays = qw(Sun Mon Tue Wed Thu Fri Sat);
     my @months = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
-    my ($s, $m, $h, $d, $M, $Y, $wd) = (gmtime())[0..6];
+    my ($s, $m, $h, $d, $M, $Y, $wd) = (@times)[0..6];
     my $format = "%s, %02d %s %4d %02d:%02d:%02d GMT";
     return sprintf($format, $weekdays[$wd], $d, $months[$M], $Y += 1900, $h, $m, $s);
 }

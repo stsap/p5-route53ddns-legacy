@@ -17,8 +17,14 @@ GetOptions(
     "AccessKey|id|i=s" => \$credentials{AccessKey},
     "SecretAccessKey|secret|key|k=s" => \$credentials{SecretAccessKey},
     "zone|z=s" => \my $zone,
-    "host|h=s" => \my @host
+    "host|h=s" => \my @host,
+    "ntp|n" => \my $usentp,
+    "ntpserver|s=s" => \my $ntpserver
 );
+die("if ntp is true, required specifying ntpserver.") if ($usentp and not $ntpserver);
+$credentials{"use_ntp"} = $usentp;
+$credentials{"ntp_server"} = $ntpserver;
+
 $zone = ($zone =~ /\.$/msx) ? $zone: $zone.".";
 
 my $gip = get('http://169.254.169.254/latest/meta-data/public-ipv4');
