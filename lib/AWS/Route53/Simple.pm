@@ -356,7 +356,7 @@ sub _timestamp {
         my $server = $self->{"ntp_server"} or $opts->{"ntp_server"};
         my %ntp;
         eval {
-            use Net::NTP;
+            eval("use Net::NTP");
             %ntp = get_ntp_responce($server);
         };
         die($@) if ($@);
