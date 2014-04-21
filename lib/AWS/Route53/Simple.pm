@@ -349,11 +349,10 @@ sub _createSignedParam {
 sub _timestamp {
     my $self = shift;
     my $opts = shift;
-    my $use_ntp = $self->{"use_ntp"} or $opts->{"use_ntp"};
+    my $use_ntp = $self->{"use_ntp"} || $opts->{"use_ntp"};
     my @times = gmtime();
     if ($use_ntp) {
-        @times = undef;
-        my $server = $self->{"ntp_server"} or $opts->{"ntp_server"};
+        my $server = $self->{"ntp_server"} || $opts->{"ntp_server"};
         my %ntp;
         eval {
             eval("use Net::NTP;");
@@ -362,6 +361,7 @@ sub _timestamp {
         die($@) if ($@);
         @times = gmtime($ntp{"Transmit Timestamp"});
     }
+        exit;
     my @weekdays = qw(Sun Mon Tue Wed Thu Fri Sat);
     my @months = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
     my ($s, $m, $h, $d, $M, $Y, $wd) = (@times)[0..6];
