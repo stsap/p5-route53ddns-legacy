@@ -381,7 +381,7 @@ sub _validateAction {
     if (not $self->{"Action"}) {
         die("action is required.");
     }
-    if (not grep({$self->{"Action"} eq $_} keys(ACTIONS))) {
+    if (not grep({$self->{"Action"} eq $_} keys(%{ACTIONS()}))) {
         die("unknown action: ".$self->{"Action"});
     }
 }
@@ -446,7 +446,7 @@ sub _setService { $_[0]->{"Service"} = $_[1]; }
 
 ## @method [private] _getActions()
 # describes the parameters that can be specified in the "action" method.
-sub _getActions { return keys(ACTIONS); }
+sub _getActions { return keys(%{ACTIONS()}); }
 
 ## @method [private] _setProperties()
 # sets the class properties
